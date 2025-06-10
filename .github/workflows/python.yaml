@@ -1,5 +1,5 @@
-name: Python FastAPI App
-run-name : ${{ github.workflow }}
+name: Python FastAPI APP
+run-name: ${{ github.workflow }}
 
 on: [push]
 
@@ -8,15 +8,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-    
+      - uses: actions/checkout@v3
+
       - name: Setup Python
         uses: actions/setup-node@v4
         with:
           python-version: "3.11"
-      
+
       - name: Install Dependencies
-        run: | 
+        run: |
           cd python/fastapi
           python -m pip install --upgrade pip
           pip install -r requirements.txt
@@ -24,9 +24,10 @@ jobs:
       - name: Start Uvicorn Server
         run: |
           cd python/fastapi
-          uvicorn app:app --host 0.0.0.0 --port 3000 --reload & timeout-minutes: 10
+          uvicorn app:app --host 0.0.0.0 --port 3000 --reload &
+        timeout-minutes: 10
 
-      - name: Start Uvicorn Server
+      - name: Stop Uvicorn Server
         run: |
           cd python/fastapi
           pkill -f uvicorn
